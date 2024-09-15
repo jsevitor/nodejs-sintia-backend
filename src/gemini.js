@@ -1,11 +1,15 @@
 import path from "path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
+import dotenv from "dotenv";
 
-const genAI = new GoogleGenerativeAI("AIzaSyAQq2BAbdXuOvaCYVnJAMnYsA5zqy5_UkA");
-const fileManager = new GoogleAIFileManager(
-  "AIzaSyAQq2BAbdXuOvaCYVnJAMnYsA5zqy5_UkA"
-);
+// Carregar variáveis de ambiente do arquivo .env
+dotenv.config();
+
+console.log("API Key:", process.env.GOOGLE_API_KEY);
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -30,7 +34,7 @@ export async function analyzeFile(filePath) {
         },
       },
       {
-        text: `Please return JSON describing the contract contractor, the hired, the contract amount, the contract object, and the hired's document (CPF or CNPJ) from the results using the following schema:
+        text: `Please return JSON describing the contract's number (only the numbers), the contractor, the hired, the contract amount, the contract object, and the hired's document (CPF or CNPJ) from the results using the following schema:
       
       {
         "contractNumber: "str",
