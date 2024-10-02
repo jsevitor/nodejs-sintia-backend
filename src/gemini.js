@@ -6,8 +6,6 @@ import dotenv from "dotenv";
 // Carregar variáveis de ambiente do arquivo .env
 dotenv.config();
 
-console.log("API Key:", process.env.GOOGLE_API_KEY);
-
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY);
 
@@ -34,13 +32,13 @@ export async function analyzeFile(filePath) {
         },
       },
       {
-        text: `Please return JSON describing the contract's number (only the numbers), the contractor, the hired, the contract amount, the contract object, and the hired's document (CPF or CNPJ) from the results using the following schema:
+        text: `Please return JSON describing the contract's number (only the numbers), the contractor, the contracted party, the contract value, the contract object, and the contracted party's document (CPF or CNPJ) and representative person from the results using the following schema:
       
       {
-        "contractNumber: "str",
-        "contractor": {"name": str, "description": str},
-        "hired": {"name": str, "description": str, "document": str},
-        "contract_amount": float,
+        "contract_number: "str",
+        "contractor": {"name": str, "description": str, "document": str},
+        "contracted_party": {"name": str, "description": str, "document": str, "representative": str},
+        "contract_value": float,
         "contract_object": str
       }
       
