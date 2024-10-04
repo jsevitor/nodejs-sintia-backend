@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json()); // Para interpretar JSON no corpo das requisições
 app.use(router); // Use o router que contém as rotas definidas
 
-createTable();
+// createTable();
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
