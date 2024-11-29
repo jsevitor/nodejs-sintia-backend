@@ -6,7 +6,7 @@ import router from "./Routes.js";
 import { createTable } from "./Controllers/Contract.js";
 
 const app = express();
-const PORT = 3001;
+const PORT = 3010;
 
 app.use(cors());
 app.use(express.json()); // Para interpretar JSON no corpo das requisições

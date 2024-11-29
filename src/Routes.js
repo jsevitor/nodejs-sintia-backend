@@ -40,7 +40,12 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const result = await analyzeFile(filePath);
 
     // Parse do resultado da análise para JSON
-    const contractData = JSON.parse(result);
+    const cleanResponse = result.replace(/```json|```/g, ""); // Remove a marcação de código
+    const contractData = JSON.parse(cleanResponse);
+
+    // const contractData = JSON.parse(result);
+
+    // console.log(result);
 
     // Insere o contrato no banco de dados
     await insertContract(contractData);
