@@ -32,19 +32,19 @@ export async function analyzeFile(filePath) {
         },
       },
       {
-        text: `Please return JSON describing the contract's number (only the numbers), the contractor, the contracted party, the contract value, the contract object, and the contracted party's document (CPF or CNPJ) and representative person from the results using the following schema:
-      
-      {
-        "contract_number: "str",
-        "contractor": {"name": str, "description": str, "document": str},
-        "contracted_party": {"name": str, "description": str, "document": str, "representative": str},
-        "contract_value": float,
-        "contract_object": str
-      }
-      
-      All fields are required.
-      
-      Important: Only return a single piece of valid JSON text.`,
+        text: `Por favor, retorne um JSON descrevendo o número do contrato (na configuração números/ano), o contratante, a pessoa representante do contratante, a parte contratada, o documento da parte contratada (CPF ou CNPJ), a pessoa representante da contratada, o valor do contrato, o objeto do contrato e a data de vigência do contrato, utilizando o seguinte esquema:
+        {
+          "contract_number": "str",
+          "contractor": {"name": str, "description": str, "document": str, "representative": str},
+          "contracted_party": {"name": str, "description": str, "document": str, "representative": str},
+          "contract_value": float,
+          "contract_object": str,
+          "contract_term": "str"
+        }
+          
+          Todos os campos são obrigatórios.
+          
+          Importante: Retorne apenas um único texto JSON válido.`,
       },
     ]);
 
@@ -56,3 +56,5 @@ export async function analyzeFile(filePath) {
     throw error;
   }
 }
+
+analyzeFile("uploads/doc.pdf");
