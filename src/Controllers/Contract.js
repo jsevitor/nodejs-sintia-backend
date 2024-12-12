@@ -3,38 +3,48 @@ import { openDb } from "../configDB.js";
 export async function createTable() {
   openDb().then((db) => {
     db.exec(
-      "CREATE TABLE IF NOT EXISTS contracts (id INTEGER PRIMARY KEY AUTOINCREMENT, contract_number TEXT, contractor_name TEXT, contractor_description TEXT, contractor_document TEXT, contractor_representative TEXT, contracted_party_name TEXT, contracted_party_description TEXT, contracted_party_document TEXT, contracted_party_representative TEXT, contract_value REAL, contract_object TEXT, contract_term TEXT"
+      "CREATE TABLE IF NOT EXISTS contracts (id INTEGER PRIMARY KEY AUTOINCREMENT, contract_number TEXT, contractor_name TEXT, contractor_description TEXT, contractor_document TEXT, contractor_representative TEXT, contracted_party_name TEXT, contracted_party_description TEXT, contracted_party_document TEXT, contracted_party_representative TEXT, contract_value REAL, contract_object TEXT, contract_term TEXT)"
     ).catch((error) => console.error("Error creating table:", error));
   });
 }
 
 export async function selectContracts(req, res) {
-  openDb().then((db) => {
-    db.all("SELECT * FROM contracts")
-      .then((contracts) => res.json(contracts))
-      .catch((error) => {
-        res.status(500).json({ error: "Error fetching contracts" });
-        console.error("Error fetching contracts:", error);
-      });
-  });
+  openDb()
+    .then((db) => {
+      db.all("SELECT * FROM contracts")
+        .then((contracts) => res.json(contracts))
+        .catch((error) => {
+          res.status(500).json({ error: "Error fetching contracts" });
+          console.error("Error fetching contracts:", error);
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error opening database" });
+      console.error("Error opening database:", error);
+    });
 }
 
 export async function selectContract(req, res) {
-  let id = req.body.id;
-  openDb().then((db) => {
-    db.get("SELECT * FROM contracts WHERE id=?", [id])
-      .then((contract) => {
-        if (contract) {
-          res.json(contract);
-        } else {
-          res.status(404).json({ error: "Contract not found" });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "Error fetching contract" });
-        console.error("Error fetching contract:", error);
-      });
-  });
+  let id = req.params.id; // Modificado para pegar o parâmetro da URL
+  openDb()
+    .then((db) => {
+      db.get("SELECT * FROM contracts WHERE id=?", [id])
+        .then((contract) => {
+          if (contract) {
+            res.json(contract);
+          } else {
+            res.status(404).json({ error: "Contract not found" });
+          }
+        })
+        .catch((error) => {
+          res.status(500).json({ error: "Error fetching contract" });
+          console.error("Error fetching contract:", error);
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error opening database" });
+      console.error("Error opening database:", error);
+    });
 }
 
 export async function insertContract(contract) {
@@ -67,17 +77,22 @@ export async function insertContract(contract) {
 
 export async function deleteContract(req, res) {
   let id = req.body.id;
-  openDb().then((db) => {
-    db.run("DELETE FROM contracts WHERE id=?", [id])
-      .then(() => {
-        res.json({
-          statusCode: 200,
-          msg: "Contrato deletado com sucesso!",
+  openDb()
+    .then((db) => {
+      db.run("DELETE FROM contracts WHERE id=?", [id])
+        .then(() => {
+          res.json({
+            statusCode: 200,
+            msg: "Contrato deletado com sucesso!",
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({ error: "Error deleting contract" });
+          console.error("Error deleting contract:", error);
         });
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "Error deleting contract" });
-        console.error("Error deleting contract:", error);
-      });
-  });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error opening database" });
+      console.error("Error opening database:", error);
+    });
 }
