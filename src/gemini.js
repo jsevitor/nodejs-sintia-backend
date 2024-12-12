@@ -56,5 +56,3 @@ export async function analyzeFile(filePath) {
     throw error;
   }
 }
-
-analyzeFile("uploads/doc.pdf");
