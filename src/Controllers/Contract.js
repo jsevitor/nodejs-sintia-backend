@@ -3,7 +3,7 @@ import { openDb } from "../configDB.js";
 export async function createTable() {
   openDb().then((db) => {
     db.exec(
-      "CREATE TABLE IF NOT EXISTS contracts (id INTEGER PRIMARY KEY AUTOINCREMENT, contract_number TEXT, contractor_name TEXT, contractor_description TEXT, contractor_document TEXT, contracted_party_name TEXT, contracted_party_description TEXT, contracted_party_document TEXT, contracted_party_representative TEXT, contract_value REAL, contract_object TEXT)"
+      "CREATE TABLE IF NOT EXISTS contracts (id INTEGER PRIMARY KEY AUTOINCREMENT, contract_number TEXT, contractor_name TEXT, contractor_description TEXT, contractor_document TEXT, contractor_representative TEXT, contracted_party_name TEXT, contracted_party_description TEXT, contracted_party_document TEXT, contracted_party_representative TEXT, contract_value REAL, contract_object TEXT, contract_term TEXT"
     ).catch((error) => console.error("Error creating table:", error));
   });
 }
@@ -41,18 +41,20 @@ export async function insertContract(contract) {
   const db = await openDb();
   try {
     await db.run(
-      "INSERT INTO contracts (contract_number, contractor_name, contractor_description, contractor_document, contracted_party_name, contracted_party_description, contracted_party_document, contracted_party_representative, contract_value, contract_object) VALUES (?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO contracts (contract_number, contractor_name, contractor_description, contractor_document, contractor_representative, contracted_party_name, contracted_party_description, contracted_party_document, contracted_party_representative, contract_value, contract_object, contract_term) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
       [
         contract.contract_number,
         contract.contractor.name,
         contract.contractor.description,
         contract.contractor.document,
+        contract.contractor.representative,
         contract.contracted_party.name,
         contract.contracted_party.description,
         contract.contracted_party.document,
         contract.contracted_party.representative,
         contract.contract_value,
         contract.contract_object,
+        contract.contract_term,
       ]
     );
     console.log("Dados de contrato inseridos com sucesso.");
