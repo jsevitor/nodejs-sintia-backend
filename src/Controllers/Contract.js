@@ -76,29 +76,24 @@ export async function insertContract(contract) {
 }
 
 export async function deleteContract(req, res) {
-  const ids = req.body.ids;  // Espera um array de IDs
-
-  if (!Array.isArray(ids) || ids.length === 0) {
-    return res.status(400).json({ error: "IDs não fornecidos ou inválidos" });
-  }
-
-  try {
-    // Conectar ao banco de dados
-    const db = await openDb();
-
-    // Deletar contratos em um único comando (usando placeholders para segurança)
-    const placeholders = ids.map(() => '?').join(',');
-    const sql = `DELETE FROM contracts WHERE id IN (${placeholders})`;
-
-    await db.run(sql, ids); // Executa a query
-
-    res.json({
-      statusCode: 200,
-      msg: "Contratos deletados com sucesso!",
+  let id = req.body.id;
+  openDb()
+    .then((db) => {
+      db.run("DELETE FROM contracts WHERE id=?", [id])
+        .then(() => {
+          res.json({
+            statusCode: 200,
+            msg: "Contrato deletado com sucesso!",
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({ error: "Error deleting contract" });
+          console.error("Error deleting contract:", error);
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error opening database" });
+      console.error("Error opening database:", error);
     });
-  } catch (error) {
-    console.error("Erro ao deletar contratos:", error);
-    res.status(500).json({ error: "Erro ao deletar contratos" });
-  }
 }
 

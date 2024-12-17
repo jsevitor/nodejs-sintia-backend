@@ -55,6 +55,6 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-router.delete("/contracts", deleteContract);
+router.delete("/contract", deleteContract);
 
 export default router;
