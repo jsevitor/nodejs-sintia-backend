@@ -75,7 +75,7 @@ export async function insertContract(contract) {
   }
 }
 
-export async function deleteContracts(req, res) {
+export async function deleteContract(req, res) {
   const ids = req.body.ids;  // Espera um array de IDs
 
   if (!Array.isArray(ids) || ids.length === 0) {
