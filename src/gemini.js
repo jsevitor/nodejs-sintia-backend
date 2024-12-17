@@ -32,7 +32,7 @@ export async function analyzeFile(filePath) {
         },
       },
       {
-        text: `Por favor, retorne um JSON descrevendo o número do contrato (na configuração números/ano), o contratante, a pessoa representante do contratante, a parte contratada, o documento da parte contratada (CPF ou CNPJ), a pessoa representante da contratada, o valor do contrato, o objeto do contrato e a data de vigência do contrato, utilizando o seguinte esquema:
+        text: `Por favor, retorne um JSON descrevendo o número do contrato (apenas os números, exemplo: xxx/ano), o contratante, a pessoa representante do contratante, a parte contratada, o documento da parte contratada (CPF ou CNPJ), a pessoa representante da contratada, o valor do contrato, o objeto do contrato e a data de vigência do contrato, utilizando o seguinte esquema:
         {
           "contract_number": "str",
           "contractor": {"name": str, "description": str, "document": str, "representative": str},
