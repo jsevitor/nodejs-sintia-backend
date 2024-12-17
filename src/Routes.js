@@ -43,10 +43,6 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const cleanResponse = result.replace(/```json|```/g, ""); // Remove a marcação de código
     const contractData = JSON.parse(cleanResponse);
 
-    // const contractData = JSON.parse(result);
-
-    // console.log(result);
-
     // Insere o contrato no banco de dados
     await insertContract(contractData);
 
@@ -59,6 +55,6 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-router.delete("/contract", deleteContract);
+router.delete("/contracts", deleteContract);
 
 export default router;
