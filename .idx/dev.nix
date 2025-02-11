@@ -12,6 +12,7 @@
     # pkgs.nodejs_20
     # pkgs.nodePackages.nodemon
     pkgs.sqlite
+    pkgs.service-wrapper
   ];
 
   # Sets environment variables in the workspace
