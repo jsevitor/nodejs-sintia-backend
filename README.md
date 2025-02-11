@@ -6,7 +6,7 @@ Este repositório contém o backend da aplicação Sintia, um projeto desenvolvi
 
 - **Node.js** – para execução do backend
 - **Express.js** – para estruturação das rotas
-- **SQLite** – banco de dados leve e eficiente
+- **PostgreSQL** – banco de dados robusto e relacional
 - **Google Gemini API** – para análise de contratos
 
 ## Funcionalidades Implementadas
@@ -30,16 +30,21 @@ Este repositório contém o backend da aplicação Sintia, um projeto desenvolvi
 3. Configure as variáveis de ambiente no arquivo `.env`:
    ```env
    GOOGLE_GEMINI_API_KEY="sua-chave-aqui"
+   DB_USER="usuario"
+   DB_HOST="host"
+   DB_NAME="nome-banco-de-dados"
+   DB_PASSWORD="senha"
+   DB_PORT=5432
+   DB_SSL=true
    ```
 4. Inicie o servidor:
    ```bash
    npm run dev
    ```
-5. A API estará disponível em `http://localhost:3000`
+5. A API estará disponível em `http://localhost:3010`
 
 ## Melhorias Futuras
 
-- Migração para banco de dados mais consistente
 - Implementação de sistema de autenticação
 - Análise aprimorada de contratos com refinamento dos modelos de IA
 
