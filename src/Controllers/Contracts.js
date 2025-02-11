@@ -44,18 +44,26 @@ export const insertContract = async (req, res) => {
   const contractData = req.body;
   const {
     contract_number,
-    contractor_name,
-    contractor_description,
-    contractor_document,
-    contractor_representative,
-    contracted_party_name,
-    contracted_party_description,
-    contracted_party_document,
-    contracted_party_representative,
     contract_value,
     contract_object,
     contract_term,
+    contractor,  // Agora, 'contractor' e 'contracted_party' são objetos
+    contracted_party
   } = contractData;
+
+  const {
+    name: contractor_name,
+    description: contractor_description,
+    document: contractor_document,
+    representative: contractor_representative
+  } = contractor || {}; // Desestruturação do objeto contractor
+
+  const {
+    name: contracted_party_name,
+    description: contracted_party_description,
+    document: contracted_party_document,
+    representative: contracted_party_representative
+  } = contracted_party || {}; // Desestruturação do objeto contracted_party
 
   try {
     const { rows } = await pool.query(
