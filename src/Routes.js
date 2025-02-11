@@ -3,10 +3,11 @@ import { uploadFile } from "./Controllers/UploadFile.js";
 import { analyzeFile } from "./gemini.js";
 import {
   deleteContract,
+  deleteContracts,
   insertContract,
   selectContract,
   selectContracts,
-} from "./Controllers/Contract.js";
+} from "./Controllers/Contracts.js";
 
 const router = express.Router();
 
@@ -22,10 +23,13 @@ router.get("/", (req, res) => {
   });
 });
 
+// Rota para buscar todos os contratos
 router.get("/contracts", selectContracts);
-router.get("/contract", selectContract);
 
-// Endpoint para upload de arquivos
+// Rota para buscar um contrato específico por ID
+router.get("/contract/:id", selectContract);
+
+// Endpoint para upload de arquivos e inserção no banco de dados
 router.post("/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "Nenhum arquivo enviado." });
@@ -43,18 +47,18 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const cleanResponse = result.replace(/```json|```/g, ""); // Remove a marcação de código
     const contractData = JSON.parse(cleanResponse);
 
-    // Insere o contrato no banco de dados
-    await insertContract(contractData);
-
-    console.log("Contrato inserido:", contractData);
-
-    res.json({ message: "Contrato inserido com sucesso.", contractData });
+    // Insere o contrato no banco de dados e retorna o contrato inserido
+    await insertContract({ body: contractData }, res);
   } catch (error) {
     console.error("Erro no endpoint /upload:", error);
     res.status(500).json({ error: "Erro ao processar o arquivo." });
   }
 });
 
-router.delete("/contract", deleteContract);
+// Rota para deletar um contrato por ID
+router.delete("/contract/:id", deleteContract);
+
+// Rota para deletar múltiplos contratos (usando array de IDs no body)
+router.delete("/contracts", deleteContracts);
 
 export default router;

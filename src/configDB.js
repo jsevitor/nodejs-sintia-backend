@@ -1,15 +1,15 @@
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
+import { Pool } from "pg";
+import dotenv from "dotenv";
 
-export async function openDb() {
-  const db = await open({
-    filename: "./database.db",
-    driver: sqlite3.Database,
-  });
+dotenv.config();
 
-  // Configurações para garantir a consistência
-  await db.exec("PRAGMA journal_mode = WAL"); // Habilita o modo Write-Ahead Logging
-  await db.exec("PRAGMA synchronous = FULL"); // Sincronização total para maior segurança
+const pool = new Pool({
+  user: process.env.DB_USER || "seu_usuario",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "seu_banco_de_dados",
+  password: process.env.DB_PASSWORD || "sua_senha",
+  port: process.env.DB_PORT || 5432,
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
+});
 
-  return db;
-}
+export { pool };
